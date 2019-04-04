@@ -111,6 +111,11 @@ class Updater extends BasicEmitter {
 			$this->emit('\OC\Updater', 'maintenanceEnabled');
 		}
 
+		// Clear CAN_INSTALL file if not on git
+		if (\OC_Util::getChannel() !== 'git') {
+			unlink(\OC::$configDir . '/CAN_INSTALL');
+		}
+
 		$installedVersion = $this->config->getSystemValue('version', '0.0.0');
 		$currentVersion = implode('.', \OCP\Util::getVersion());
 
