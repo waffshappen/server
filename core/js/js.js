@@ -1202,25 +1202,28 @@ function initCore() {
 			minDragDistance: 100
 		});
 
-		$('#app-content').prepend('<div id="app-navigation-toggle" class="icon-menu" style="display:none;" tabindex="0"></div>');
+		// Add app nav toggle only if it's not provided by the app
+		if (!$('#app-navigation-toggle').exists()) {
+			$('#app-content').prepend('<div id="app-navigation-toggle" class="icon-menu" style="display:none;" tabindex="0"></div>');
 
-		var toggleSnapperOnButton = function(){
-			if(snapper.state().state == 'left'){
-				snapper.close();
-			} else {
-				snapper.open('left');
-			}
-		};
+			var toggleSnapperOnButton = function(){
+				if(snapper.state().state == 'left'){
+					snapper.close();
+				} else {
+					snapper.open('left');
+				}
+			};
 
-		$('#app-navigation-toggle').click(function(){
-			toggleSnapperOnButton();
-		});
-
-		$('#app-navigation-toggle').keypress(function(e) {
-			if(e.which == 13) {
+			$('#app-navigation-toggle').click(function(){
 				toggleSnapperOnButton();
-			}
-		});
+			});
+
+			$('#app-navigation-toggle').keypress(function(e) {
+				if(e.which == 13) {
+					toggleSnapperOnButton();
+				}
+			});
+		}
 
 		// close sidebar when switching navigation entry
 		var $appNavigation = $('#app-navigation');
