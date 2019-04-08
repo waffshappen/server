@@ -78,6 +78,34 @@ Feature: app-files-sharing-link
     And I create a new folder named "Subfolder"
     Then I see that the file list contains a file named "Subfolder"
 
+  Scenario: open a folder in a public shared folder
+    Given I act as John
+    And I am logged in
+    And I create a new folder named "Shared folder with subfolders"
+    # To share the link the "Share" inline action has to be clicked but, as the
+    # details view is opened automatically when the folder is created, clicking
+    # on the inline action could fail if it is covered by the details view due
+    # to its opening animation. Instead of ensuring that the animations of the
+    # contents and the details view have both finished it is easier to close the
+    # details view and wait until it is closed before continuing.
+    And I close the details view
+    And I see that the details view is closed
+    And I share the link for "Shared folder with subfolders"
+    And I write down the shared link
+    And I enter in the folder named "Shared folder with subfolders"
+    And I create a new folder named "Subfolder"
+    And I see that the file list contains a file named "Subfolder"
+    And I enter in the folder named "Subfolder"
+    And I create a new folder named "Another subfolder"
+    And I see that the file list contains a file named "Another subfolder"
+    When I act as Jane
+    And I visit the shared link I wrote down
+    And I see that the current page is the shared link I wrote down
+    And I see that the file list contains a file named "Subfolder"
+    And I enter in the folder named "Subfolder"
+    Then I see that the file list contains a file named "Another subfolder"
+
+
   Scenario: owner sees folder created in the public page of an editable shared folder
     Given I act as John
     And I am logged in
