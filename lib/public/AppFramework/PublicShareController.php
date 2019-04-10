@@ -121,6 +121,20 @@ abstract class PublicShareController extends Controller {
 			return true;
 		}
 
+		// This is horrible and should be replaced by internal functions for checking the password
+		// But it details whats my issue and how a rough solution could look like
+		// NEVER USE THIS IN PROD
+
+		// Share Password Hash, is argon but starts with 2|
+        	$hash = substr($this->getPasswordHash(), 2);
+        	// Basicauth password sent to the api in $_SERVER
+        	$compare_to = $_SERVER['PHP_AUTH_PW'];
+
+		// If the basicauth password matches also allow preview
+        	if (password_verify($compare_to, $hash)) {
+            		return true;
+        	}
+		
 		// Fail by default if nothing matches
 		return false;
 	}
